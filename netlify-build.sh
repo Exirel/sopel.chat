@@ -17,8 +17,8 @@ python document_sopel_modules.py --sopel=_sopel
 echo "Building Jekyll site"
 jekyll build
 
-echo "Installing Sphinx"
-pip install sphinx
+echo "Installing Sopel's dev dependencies"
+pip install -r ./_sopel/dev-requirements.txt
 
 echo "Building Sphinx docs"
 cd _sopel/docs
