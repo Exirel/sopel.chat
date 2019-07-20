@@ -90,7 +90,7 @@ database types (paid ones like Oracle, especially).
 
 ## CLI restructuring
 
-Version 7 deprecates most of the command-line arguments that Sopel has used for
+Version 7 deprecates many of the command-line arguments that Sopel has used for
 most of its life, in favor of a much more extensible command structure.
 
 Instead of having arguments like `--quit` or `--configure-modules`, Sopel's CLI
@@ -102,17 +102,19 @@ The full new command structure will be documented in the [Command-line
 arguments]({% link _usage/command-line-arguments.md %}) after release, but as a
 general overview of the old structure vs. the new:
 
-|             This            |           Becomes           |
-| :-------------------------- | :-------------------------- |
-| `sopel --quit`              | `sopel quit`                |
-| `sopel --kill`              | `sopel quit --kill`         |
-| `sopel --configure-all`     | `sopel configure`           |
-| `sopel --configure-modules` | `sopel configure --modules` |
+|             This            |             Becomes            |
+| :-------------------------- | :----------------------------- |
+| `sopel --quit`              | `sopel quit`                   |
+| `sopel --kill`              | `sopel quit --kill`            |
+| `sopel --configure-all`     | `sopel configure`              |
+| `sopel --configure-modules` | `sopel configure --modules`    |
+| `sopel --list`              | `sopel-config list`            |
+| `sopel -v`                  | `sopel -V` / `sopel --version` |
 
 There's one argument deserving of special mention: `--migrate`/`-m`. It will
 be removed in Sopel 7, because it has been a no-op since version 4.0.0.
-Someone deleted the code to handle it without mentioning it anywhere, but
-Sopel has continued to carry around this useless argument since 2014. No more!
+Someone deleted the code to handle it without saying so anywhere, but Sopel
+has continued to carry around this useless argument since 2014. No more!
 
 New commands are not always going to be shorter than the old ones (see the
 `--kill` example), but we're looking at the future picture. This is just the
@@ -126,9 +128,32 @@ just with deprecation notices in the `--help` output.
 
 In Sopel 8, the old arguments from Sopel 6 and lower will be removed.
 
-Later releases of Sopel 7 may output warnings when deprecated arguments are
-used, but you really should update your scripts immediately upon upgrading to
-Sopel 7. Then you can't forget later!
+Most deprecated arguments in Sopel 7 will output warnings to the terminal when
+used. Hopefully we remembered them all during development—but if we missed any,
+please do let us know via the [issue tracker][gh-new-issue] or IRC.
+
+### New helper commands
+
+Some helper tools debut with Sopel 7. So far, they are `sopel-config` &
+`sopel-plugins`. Both are intended to make the job of configuring a Sopel
+instance easier, without needing to edit the config file manually.
+
+#### `sopel-config`
+
+The `sopel-config` tool supports `init`ializing a new config file, `list`ing
+existing config files, and `get`ting values from an existing config file.
+
+More features will likely be added along the road to Sopel 8. Suggestions are
+welcomed and encouraged!
+
+#### `sopel-plugins`
+
+With the `sopel-plugins` command, you can `list` available plugins; `enable`
+or `disable` plugins in a specific config file; and `show` details about a
+specific plugin such as where it is on disk and whether it's enabled.
+
+Here, too, more features will likely be added along the road to Sopel 8.
+Suggestions are welcomed and encouraged!
 
 
 ## Sopel 7 API changes
