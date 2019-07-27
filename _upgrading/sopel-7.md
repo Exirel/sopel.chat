@@ -340,10 +340,10 @@ While the whole `sopel.web` module was marked as deprecated in [Sopel
 6.2.0][v6.2.0], because it largely serves as a wrapper around the `requests`
 library, parts of it seem to be useful enough that they should be kept around.
 
-For Sopel 8, we intend to move `sopel.web` to `sopel.tools.web`. Ideally the new
-location will be available in Sopel 7 to provide a transitional period. Similar
-to how importing from both `willie` and `sopel` worked in the run-up to Sopel
-6.0, it will be possible to do any of the following during Sopel 7's life cycle:
+For Sopel 8, we intend to move `sopel.web` to `sopel.tools.web`. The new
+location is available in Sopel 7 to provide a transitional period. Similar to
+how importing from both `willie` and `sopel` worked in the run-up to Sopel 6.0,
+it is possible to do any of the following during Sopel 7's life cycle:
 
   - `import sopel.web`
   - `from sopel import web`
@@ -356,7 +356,7 @@ These explicitly deprecated functions will also be removed at the same time:
   - `sopel.web.get()` — use `requests.get()` directly instead
   - `sopel.web.head()` — use `requests.head()` directly instead
   - `sopel.web.post()` — use `requests.post()` directly instead
-  - `sopel.web.get_urllib_object()` — seriously, just use [`requests`][requests]
+  - `sopel.web.get_urllib_object()` — really, just use [`requests`][requests]
 
 We will also tweak the module constants:
 
@@ -364,9 +364,10 @@ We will also tweak the module constants:
   - `sopel.web.ca_certs`: removed in `sopel.tools.web` — it no longer has any
     function (and was probably not useful for Sopel plugins to import, anyway)
 
-New additions to Sopel's web tools (there may be a few) will be available only
-in the new location (`sopel.tools.web`). Functions and constants that we plan to
-remove (as listed above) will be available only from the old `sopel.web` module.
+New additions to Sopel's web tools made during the life of 7.x will be
+available only in `sopel.tools.web`. Functions and constants that we plan to
+remove in Sopel 8 (as listed above) will be available only from the old
+`sopel.web` module.
 
   [requests]: https://pypi.org/project/requests/
   [v6.0.0]: {% link _changelogs/6.0.0.md %}
