@@ -296,6 +296,55 @@ Depending on how much trouble the `aspell` dependencies cause, support for the
   [linux-enchant]: https://github.com/sopel-irc/sopel/pull/1454
 
 
+## Planned user-facing changes
+
+A "user" here is someone who *runs* (or is responsible for *maintaining*) one
+or more Sopel bots. If you're reading this, that *probably* describes you.
+(Unless you're some kind of weirdo who only writes plugins for other people to
+use, and never tests them… Seriously, who does that?)
+
+You might need to edit your bot's configuration in the future due to these
+plans. Sopel might take care of them on its own, too. But in case human
+intervention is required, here are the details.
+
+### Config format change for list values
+
+Since the new config system was introduced, lists of values have been
+represented in the config file as strings separated by commas (`,`). Sopel 7
+adds support for storing these lists as multi-line strings instead, with
+values separated by newlines.
+
+Here's what that means in practice:
+
+```ini
+# Current format
+[core]
+enable = admin,reddit,wikipedia,wiktionary
+
+# New format
+[core]
+enable =
+    admin
+    reddit
+    wikipedia
+    wiktionary
+```
+
+Note that Sopel 7 will upgrade the stored format of any comma-separated list
+value if the config is saved (with `.save`) after editing the value via IRC
+(with `.set section.option_name list,of,values`).
+
+In Sopel 7, this is just a convenience change. It means that lists stored in
+the new format can support commas within the values, without any annoying
+escape-character shenanigans (as was our first plan). Old-style values (all on
+a single line) will continue to be split on commas as before.
+
+**Eventually, in Sopel 9, we plan to remove this fallback behavior.** Sopel 8
+may emit a warning to the console and/or log file at startup if old-style list
+values are present in the loaded config file, but we encourage updating your
+config files *long* before then.
+
+
 ## Planned future API changes
 
 This section is all about stuff that won't cause problems *now*, but *will*
