@@ -36,7 +36,7 @@ remained stagnant for far too long. While the Sopel project was effectively
 unmaintained between late 2016 and early 2018, Python 3.3 reached end-of-life
 (September 29, 2017). During the lengthy development period of Sopel 7, Python
 3.4 reached end-of-life (March 18, 2019). Sopel 7 is likely to be released very
-close to the EOL of Python 2.7.
+close to the EOL of Python 2.7 (January 1, 2020).
 
 We can't keep testing support for these old versions forever. At some point,
 Sopel's core developers will lose the ability to run them locally. (Python 3.3
@@ -46,24 +46,32 @@ provider for contributions from both maintainers and the community alike, won't
 keep supporting the installation of EOL Python releases indefinitely. We can't
 support what we can't test.
 
+Furthermore, it's a waste of effort to fix bugs in new code that, for whatever
+reason, only affect old, disused versions of Python. The ratio of time spent
+to users impacted becomes too high as more systems get upgraded.
+
+And finally, supporting older Python releases sometimes prevents us from
+making highly desirable improvements (see above, re: reloading things).
+
 Keeping all this in mind, the current plan is as follows. Note that it is
 subject to change, as Sopel's development pace remains quite leisurely relative
 to the overall Python ecosystem.
 
-  - Sopel 7 will try to maintain the same Python version compatibility range as
-    Sopel 6
+  - Sopel 7 will maintain the same Python version compatibility range as 6.x,
+    barring any major roadblocks
     - This may change as Sopel 7 gets closer to release, depending on how our
       testing infrastructure and dependencies look, but we're motivated to keep
       things as-is (one of Sopel's maintainers still runs a production instance
       on Python 2.7, and cannot upgrade that system to a compatible version of
       Python 3 without significant work)
-  - Sopel 8 will drop support for Python releases that are EOL as of the start
-    of its development cycle
-    - This **definitely** means 2.7, 3.3, and 3.4 (already EOL)
-    - Python 3.5 and 3.6 support **might** be dropped, depending on timing
-      - Python 3.6 is [tentatively][PEP-494] EOL in December 2021, so presumably
-        support for 3.5 will end before then, but we don't have enough concrete
-        information from the Python project to _really_ plan this far in advance
+  - Sopel 8 will drop support for EOL Python releases immediately at the start
+    of its development cycle, and adjust version support based on the estimated
+    release date target as that becomes clearer
+    - This **definitely** means dropping 2.7, 3.3, and 3.4 (already EOL)
+    - Python 3.5 support **might** be dropped, depending on timing; it's set
+      to reach EOL around September 2020 (but no hard date yet)
+    - Python 3.6 is [tentatively][PEP-494] EOL in December 2021, but Sopel 8
+      should be finished long before then
 
 [PEP-494]: https://www.python.org/dev/peps/pep-0494/
 
