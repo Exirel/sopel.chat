@@ -275,6 +275,39 @@ behavior by default in an effort to minimize any "breakage".
 
 ## Sopel 7 module changes
 
+### Reminder DB migration
+
+Sopel 7 refers to specific instances by config file name whenever possible,
+instead of using other pieces of config data such as `nick` or `host` that are
+more likely to change. The `remind` and `tell` plugins have been updated with
+this in mind, and will attempt to automatically convert their respective data
+files to the new name format if the old filename exists.
+
+You probably will not need to do anything. However, if the automatic migration
+does fail, it will output (and log) information about what it was trying to
+do, and link to this section of the Sopel 7 upgrade guide for convenience.
+
+**If a migration failure brought you here:** Above the link you should find
+the old and new filenames the plugin was attempting to use.
+
+**Important:** Ensure the associated instance of Sopel is NOT running
+before doing anything. Tampering with the reminder files while Sopel is
+running can result in data loss.
+
+In most error cases, migration will fail because the new filename already
+exists. The simplest fix is to move or rename the conflicting file, and run
+Sopel again so the migration can complete.
+
+If both the old and new files are non-empty, you might want to peek inside
+them with a text editor to see what's there before deciding which to keep. The
+current format for both plugins' data files is essentially <abbr
+title="Tab-Separated Values">TSV</abbr>, and they can be merged by hand
+(again, _with Sopel stopped_) if both the old _and_ new files somehow contain
+meaningful, unique entries.
+
+And of course, if you need more in-depth assistance with fixing a failed
+migration, [our IRC channel][sopel-freenode] always welcomes questions.
+
 ### Rewrite of `spellcheck`
 
 As of February 2018, the Python bindings for `enchant` [became unmaintained][
