@@ -272,6 +272,21 @@ But if we did that, many (many) existing Sopel (and Willie) modules would
 potentially output "bad" help information—so we elected to keep the old
 behavior by default in an effort to minimize any "breakage".
 
+### Logging API rework
+
+Plugins should use the new `sopel.tools.get_logger()` function to get a
+logging object, starting with Sopel 7.0. It takes the same argument (the
+plugin's name) as its predecessor, `sopel.logger.get_logger()`.
+
+`sopel.logger.get_logger()` will have an extended deprecation cycle, to allow
+ample time for the ecosystem to adapt without spamming too many log files at
+first. The old function's behavior has been tweaked to work reasonably nicely
+with the harmonized logging system implemented for Sopel 7.
+
+Calls to `sopel.logger.get_logger()` will begin emitting deprecation warnings
+in Sopel 8.0, to alert stragglers (or users of possibly-abandoned code). We
+will remove this function from the API in Sopel 9.0.
+
 
 ## Sopel 7 module changes
 
