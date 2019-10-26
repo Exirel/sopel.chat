@@ -23,20 +23,24 @@ The config file is made up of a number of *sections*, each of which has a number
 of *keys* or *attributes*. If you open up your config file, you'll see
 something like this.
 
-```ini
+```conf
 [core]
 nick = Sopel
 host = irc.dftba.net
 use_ssl = False
 port = 6667
 owner = Embolalia
-channels = #YourPants,#tech
+channels =
+    "#YourPants"
+    "#tech"
 
 [admin]
 hold_ground = False
 
 [bugzilla]
-domains = bugzilla.redhat.com,bugzilla.gnome.org
+domains =
+    bugzilla.redhat.com
+    bugzilla.gnome.org
 ```
 
 Here, `core`, `admin`, and `bugzilla` are sections. As you may have guessed,
