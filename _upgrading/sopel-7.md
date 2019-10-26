@@ -373,7 +373,7 @@ values separated by newlines.
 
 Here's what that means in practice:
 
-```ini
+```conf
 # Current format
 [core]
 enable = admin,reddit,wikipedia,wiktionary
@@ -397,7 +397,7 @@ tweaking your config file(s) by hand during the upgrade process. You will need
 to be careful with the `core.channels` list, in particular. Most updated
 `core.channels` values should look like this:
 
-```ini
+```conf
 [core]
 channels =
     "#spam"
