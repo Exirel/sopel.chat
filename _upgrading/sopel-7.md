@@ -391,10 +391,29 @@ Note that Sopel 7 will upgrade the stored format of any comma-separated list
 value if the config is saved (with `.save`) after editing the value via IRC
 (with `.set section.option_name list,of,values`).
 
+**Important: The new format requires any value beginning with `#` to be
+quoted.** Automatic conversion will handle this, but be aware of it if you're
+tweaking your config file(s) by hand during the upgrade process. You will need
+to be careful with the `core.channels` list, in particular. Most updated
+`core.channels` values should look like this:
+
+```ini
+[core]
+channels =
+    "#spam"
+    "#eggs"
+    "#bacon"
+    "#snakes"
+```
+
+Unquoted values beginning with `#` *might* work properly on certain Python
+versions *if indented*, but you should quote them anyway to be safe.
+
 In Sopel 7, this is just a convenience change. It means that lists stored in
 the new format can support commas within the values, without any annoying
-escape-character shenanigans (as was our first plan). Old-style values (all on
-a single line) will continue to be split on commas as before.
+escape-character shenanigans (which was our first plan). Old-style values (all
+on a single line) will continue to be split on commas when reading config
+files, as before, and will be updated to the new format as described above.
 
 **Eventually, in Sopel 9, we plan to remove this fallback behavior.** Sopel 8
 may emit a warning to the console and/or log file at startup if old-style list
