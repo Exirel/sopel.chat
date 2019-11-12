@@ -420,6 +420,30 @@ may emit a warning to the console and/or log file at startup if old-style list
 values are present in the loaded config file, but we encourage updating your
 config files *long* before then.
 
+### Modules vs. plugins
+
+Sopel has long used the term "module" in reference to Python files (or folders
+thereof) that add functionality to the bot. This is reflected even in the
+layout of Sopel's data folder: `~/.sopel/modules` is so named because that's
+where the modules go! We'd like to change that, though.
+
+The simplified explanation is that Python already has "modules". Add-ons for
+Sopel are also Python modules, but not all Python modules are Sopel add-ons.
+This overlap gets confusing for developers sometimes.
+
+Many similar projects call this kind of add-on a "plugin". We've already
+started using the term "plugin" in our documentation, in place of "module",
+when referring to these add-ons.
+
+As a user, you'll notice only small changes related to this shift. The
+restructured CLI [described above](#cli-restructuring), for example, uses
+`sopel configure --plugins` to replace `sopel --configure-modules`. Our
+documentation will continue to move toward consistently referring to "plugins"
+and "modules" as distinct concepts. We'll also change the default search
+location for plugins from `~/.sopel/modules` to `~/.sopel/plugins` in a future
+release (probably Sopel 8), but it will be easy to re-add the old folder if
+you like via the `core.extra` setting.
+
 
 ## Planned future API changes
 
@@ -497,3 +521,31 @@ remove in Sopel 8 (as listed above) will be available only from the old
   [requests]: https://pypi.org/project/requests/
   [v6.0.0]: {% link _changelogs/6.0.0.md %}
   [v6.2.0]: {% link _changelogs/6.2.0.md %}
+
+### Finalizing the "plugin" transition
+
+As described [above](#modules-vs-plugins), we're trying to get away from the
+ambiguity of calling Sopel add-ons "modules", because that term is already
+used by Python itself. All Sopel add-ons are Python modules, but not all
+Python modules are Sopel add-ons. Many people in the Sopel community have
+tripped over this blurred line, and we have plans to change more than just
+documentation eventually.
+
+Already, in Sopel 7, the internal mechanisms for handling add-on code are all
+about "plugins" now. The module responsible is named `sopel.plugins`, and its
+submodules & members all agree on this nomenclature. But you, a _plugin_
+developer, must—confusingly—still import the "_module_" module from `sopel` to
+use any of the decorators that make Sopel plugins work. Annoying, isn't it?
+
+Rest assured that we're not done yet. Future releases of Sopel will support
+(even encourage) importing `sopel.plugin` instead, which will be the new home
+of all plugin-related decorators & constants. `sopel.module` won't go away any
+time soon, though. It predates even the name "Willie", after all—we can't just
+yank it out without a _long_ deprecation cycle. We might just leave it as a
+permanent alias to `sopel.plugin`. (The plan is still [up for
+discussion][#1738], if you're interested.)
+
+But, once available, you should _definitely_ use `sopel.plugin` in your new
+code. It's the future!
+
+  [#1738]: https://github.com/sopel-irc/sopel/issues/1738
