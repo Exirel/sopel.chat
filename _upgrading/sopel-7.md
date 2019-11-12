@@ -8,7 +8,7 @@ covers_to: 7.0
 
 Sopel 7 lays the groundwork for a lot of awesome stuff! We have a major update
 to Sopel's command-line interface in progress (which will be finished in Sopel
-8), and some API updates that might affect a few existing modules.
+8), and some API updates that might affect a few existing plugins.
 
 But first, we really need to talk briefly about Python.
 
@@ -28,7 +28,7 @@ Python 3, we would consider dropping Python 2 support in the next minor version.
 
 From Sopel 8 onward, it would be much easier to implement new features and
 enhancements if we dropped support for very old Python releases. For example,
-Sopel's support for reloading modules during runtime can be made much more
+Sopel's support for reloading plugins during runtime can be made much more
 robust using features added to the language in Python 3.4.
 
 The crux of the matter is this: Sopel's range of supported Python releases
@@ -116,7 +116,7 @@ general overview of the old structure vs. the new:
 | `sopel --quit`              | `sopel quit`                   |
 | `sopel --kill`              | `sopel quit --kill`            |
 | `sopel --configure-all`     | `sopel configure`              |
-| `sopel --configure-modules` | `sopel configure --modules`    |
+| `sopel --configure-modules` | `sopel configure --plugins`    |
 | `sopel --list`              | `sopel-config list`            |
 | `sopel -v`                  | `sopel -V` / `sopel --version` |
 
@@ -169,22 +169,22 @@ Suggestions are welcomed and encouraged!
 
 ### Managing URL callbacks
 
-For quite a while, Sopel modules wishing to override the `url.py` module's
+For quite a while, Sopel plugins wishing to override the `url.py` plugin's
 automatic title-fetching for certain URLs have customarily done something along
 these lines:
 
 ```python
-# in the module's setup() function:
+# in the plugin's setup() function:
     if not bot.memory['url_callbacks']:
         bot.memory['url_callbacks'] = tools.SopelMemory()
     bot.memory['url_callbacks'][compiled_regex] = methodname
 ```
 
 Similar manual manipulation of the object in memory was needed to unregister
-handlers at module unload:
+handlers at plugin unload:
 
 ```python
-# in the module's shutdown() function:
+# in the plugin's shutdown() function:
     try:
         del bot.memory['url_callbacks'][compiled_regex]
     except KeyError:
@@ -205,8 +205,8 @@ deprecated, leaving future versions free to move the callback storage if needed.
 
 ### Adding multiple command examples
 
-Decorating a module callable like this was a great way to add documentation to
-that command through Sopel's `help` module:
+Decorating a plugin callable like this was a great way to add documentation to
+that command through Sopel's `help` plugin:
 
 ```python
 from sopel import module
@@ -217,7 +217,7 @@ def foo_cmd(bot, trigger):
 ```
 
 However, *only one example* could ever appear in the `help` output. This was
-[confusing](https://github.com/sopel-irc/sopel/issues/1200) to module authors.
+[confusing](https://github.com/sopel-irc/sopel/issues/1200) to plugin authors.
 
 Furthermore, if more than one example was defined:
 
@@ -239,7 +239,7 @@ Ready to see if you were right?
 
 Sopel would use `.foo spam eggs sausage bacon` as the example, because due to
 how decorators work, it ends up first in the internal list despite appearing
-last in the source code. Not very intuitive for beginning module writers…
+last in the source code. Not very intuitive for beginning plugin writers…
 
 So, in Sopel 7, there is a `user_help` argument to `@module.example`. If at
 least one of a callable's examples has this attribute set to `True`, all such
@@ -268,7 +268,7 @@ closest to the function's `def` line, last in the source line order) will
 appear in `help`'s output.
 
 Making `user_help=True` the default would make *a ton* of sense, definitely!
-But if we did that, many (many) existing Sopel (and Willie) modules would
+But if we did that, many (many) existing Sopel (and Willie) plugins would
 potentially output "bad" help information—so we elected to keep the old
 behavior by default in an effort to minimize any "breakage".
 
@@ -288,7 +288,7 @@ in Sopel 8.0, to alert stragglers (or users of possibly-abandoned code). We
 will remove this function from the API in Sopel 9.0.
 
 
-## Sopel 7 module changes
+## Sopel 7 plugin changes
 
 ### Reminder DB migration
 
@@ -327,10 +327,10 @@ migration, [our IRC channel][sopel-freenode] always welcomes questions.
 
 As of February 2018, the Python bindings for `enchant` [became unmaintained][
 pyenchant-unmaintained]. This made it increasingly difficult to install the
-dependencies required for the `spellcheck` module work, and often [caused][
+dependencies required for the `spellcheck` plugin work, and often [caused][
 windows-enchant] [problems][linux-enchant] with new installations.
 
-Because of this, the `spellcheck` module was rewritten to use `aspell` instead.
+Because of this, the `spellcheck` plugin was rewritten to use `aspell` instead.
 In the process, it also gained support for a custom word list, managed by a set
 of new commands:
 
@@ -346,7 +346,7 @@ file, so we decided to go with a two-step process. Hopefully it will help Sopel
 admins around the world avoid adding typos to their bots' custom dictionaries!
 
 Depending on how much trouble the `aspell` dependencies cause, support for the
-`spellcheck` module might become a setuptools extra. Feedback is welcome!
+`spellcheck` plugin might become a setuptools extra. Feedback is welcome!
 
   [pyenchant-unmaintained]: https://github.com/rfk/pyenchant/commit/4df35b7
   [windows-enchant]: https://github.com/sopel-irc/sopel/issues/1142
@@ -427,12 +427,12 @@ This section is all about stuff that won't cause problems *now*, but *will*
 break in a future release if not updated. Most of these are planned removals of,
 or changes to, API features deprecated long ago.
 
-We suggest reviewing these upcoming changes, and updating your own modules if
-they still use anything listed here, as soon as possible. Updating modules
-published to PyPI should take priority, especially modules written for Sopel 6
+We suggest reviewing these upcoming changes, and updating your own plugins if
+they still use anything listed here, as soon as possible. Updating plugins
+published to PyPI should take priority, especially plugins written for Sopel 6
 that are not future-proofed by capping Sopel's version in their requirements.
 
-If you use third-party modules that have not been updated, we encourage you to
+If you use third-party plugins that have not been updated, we encourage you to
 inform the author(s) politely that they need to update. Or better yet, submit a
 pull request or patch yourself!
 
@@ -441,7 +441,7 @@ pull request or patch yourself!
 Sopel 7.x will be the last release series to support the `bot.privileges` data
 structure (deprecated in [Sopel 6.2.0][v6.2.0], released January 16, 2016).
 
-Beginning in Sopel 8, `bot.privileges` will be removed and modules trying to
+Beginning in Sopel 8, `bot.privileges` will be removed and plugins trying to
 access it will throw an exception. `bot.channels` will be the _only_ place to
 get privilege data going forward.
 
