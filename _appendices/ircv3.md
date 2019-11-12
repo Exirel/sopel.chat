@@ -10,7 +10,7 @@ From version 4.1.0, Sopel supports [IRCv3](https://ircv3.net/). This page detail
 ## IRCv3.1
 ### Mandatory components
 #### Capability negotiation
-Capabilities can be requested by a module in its `setup` procedure, using `bot.cap_req`. This function can also be used to require that a capability *not* be used, and will handle making sure that there is no conflict. If there is, an exception will be raised, and the module can decide whether to fail (and leave itself unloaded) or handle the problem gracefully.
+Capabilities can be requested by a plugin in its `setup` procedure, using `bot.cap_req`. This function can also be used to require that a capability *not* be used, and will handle making sure that there is no conflict. If there is, an exception will be raised, and the plugin can decide whether to fail (and leave itself unloaded) or handle the problem gracefully.
 
 #### `multi-prefix`
 From version 4.1.0, Sopel supports bitwise channel permissions. `bot.privileges` contains the privileges for each user in each channel. The privilege is a bitwise integer, which can be compared to constants for each known type of privilege. For example, `bot.privileges['#YourPants']['Embolalia'] & sopel.module.OP` will return `True` if Embolalia is an op in #YourPants. Using an inequality operator (e.g. `>=`) is often more useful in practice, as the above would return `True` only if Embolalia is reported as an op, but not if that user is an owner, despite that being a higher level. With `multi-prefix` enabled, the above would be `True` if Embolalia is an op, even if that user is also an owner, as this capability makes it easy for Sopel to recognize when a user has multiple levels.
@@ -22,11 +22,11 @@ If the server supports SASL authentication, and a `sasl_password` value is set i
 
 ### Optional Extensions
 #### `account-notify`
-There is nothing using or requesting this extension by default. A module can request this extension with no known problems.
+There is nothing using or requesting this extension by default. A plugin can request this extension with no known problems.
 #### `away-notify`
-There is nothing using or requesting this extension by default. A module can request this extension with no known problems.
+There is nothing using or requesting this extension by default. A plugin can request this extension with no known problems.
 #### `extended-join`
-There is nothing using or requesting this extension by default. A module can request this extension with no known problems.
+There is nothing using or requesting this extension by default. A plugin can request this extension with no known problems.
 #### `tls`
 **This is not currently supported.**
 
@@ -37,15 +37,15 @@ There is nothing using or requesting this extension by default. A module can req
 
 There is currently no direct way to send a message with tags, though it *may* be possible with `bot.write`.
 #### Message intents
-If a message has an intent, it can be accessed with `trigger.tags['intent']`. Currently, there is no effort made to ensure that a message with an `ACTION` tag behaves the same way as one sent as `\x01ACTION message\x01`, and as such **it is recommended that modules *not* request the `intents` capability**, as it may cause unexpected behavior in other modules. Remedies are being explored for this in future versions.
+If a message has an intent, it can be accessed with `trigger.tags['intent']`. Currently, there is no effort made to ensure that a message with an `ACTION` tag behaves the same way as one sent as `\x01ACTION message\x01`, and as such **it is recommended that plugins *not* request the `intents` capability**, as it may cause unexpected behavior in other plugins. Remedies are being explored for this in future versions.
 
 There is currently no direct way to send a message with intents, though it *may* be possible with `bot.write`.
 #### Metadata
-There is nothing using or requesting this extension by default. A module can request this extension with no known problems.
+There is nothing using or requesting this extension by default. A plugin can request this extension with no known problems.
 #### `monitor`
-There is nothing using or requesting this extension by default. A module can request this extension with no known problems.
+There is nothing using or requesting this extension by default. A plugin can request this extension with no known problems.
 ### Optional extensions
 #### `server-time`
-There is nothing using or requesting this extension by default. A module can request this extension with no known problems.
+There is nothing using or requesting this extension by default. A plugin can request this extension with no known problems.
 #### `batch`
-There is nothing using or requesting this extension by default. A module can request this extension with no known problems.
+There is nothing using or requesting this extension by default. A plugin can request this extension with no known problems.

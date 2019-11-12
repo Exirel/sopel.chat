@@ -13,7 +13,7 @@ longer supported.**
 Sopel has a built in `.help` command that can be used to get information about a
 particular command. You can add information to `.help` about your command in two
 basic ways. The first is to add a docstring and the second is to add an example
-usage with the ```@example``` decorator. Take the following module for example:
+usage with the ```@example``` decorator. Take the following plugin for example:
 
 ```py
 @sopel.module.commands('hello')
@@ -63,8 +63,8 @@ To run the unit tests and see the results you must have pytest installed and run
     (stuff removed for brevity)
     ================ 2 failed, 25 passed, 12 error in 4.63 seconds ================
 
-You can also run the unit tests of your module directly by appending the
-following to the end of your module:
+You can also run the unit tests of your plugin directly by appending the
+following to the end of your plugin:
 
 ```py
 if __name__ == "__main__":
@@ -72,7 +72,7 @@ if __name__ == "__main__":
     run_example_tests(__file__)
 ```
 
-Now if you run the the module directly in your IDE or in command line, you
+Now if you run the the plugin directly in your IDE or in command line, you
 should get something like the following:
 
     C:\Users\Venti\workspace2\sopel>set PYTHONPATH=C:\Users\Venti\workspace2\sopel
@@ -97,7 +97,7 @@ no arguments:
 ```
 
 And then we can rerun the tests without restarting Sopel or even reloading the
-module, instantly seeing the difference between expectation and reality:
+plugin, instantly seeing the difference between expectation and reality:
 
     ============================= test session starts ==============================
     platform win32 -- Python 2.7.5 -- pytest-2.3.5
@@ -120,5 +120,5 @@ module, instantly seeing the difference between expectation and reality:
 
 TODO
 
-Want to distribute your module as a package on [PyPI](https://pypi.org/)?
-[Continue to part 5!]({% link _tutorials/part-5-packaging-and-distributing-modules.md %})
+Want to distribute your plugin as a package on [PyPI](https://pypi.org/)?
+[Continue to part 5!]({% link _tutorials/part-5-packaging-and-distributing-plugins.md %})

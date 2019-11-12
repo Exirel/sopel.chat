@@ -20,7 +20,7 @@ manually [from PyPI](https://pypi.org/project/backports.ssl_match_hostname).
 
 There is also a detailed [system requirements]({% link
 _usage/system-requirements.md %}) page that is kept more-or-less updated (by a
-human) with what is required for each module.
+human) with what is required for each plugin.
 
 If you want to use Python 3 on CentOS, you may want to see [this guide]({% link
 _appendices/using-python-3-on-centos-7.md %}) on getting that set up easily.
@@ -60,8 +60,8 @@ You will need to download all of Sopel's dependencies and install them manually
 as well. These can be found on the [Python Package Index](https://pypi.org/).
 The only one that's needed for the bot itself to work is
 [backports.ssl\_match\_hostname](https://pypi.org/project/backports.ssl_match_hostname/).
-Other things are needed for modules to work properly. If you get errors about
-being unable to import modules when you start the bot, search for them on PyPI.
+Other things are needed for plugins to work properly. If you get errors about
+being unable to import plugins when you start the bot, search for them on PyPI.
 
 ### Upgrading
 
@@ -110,13 +110,13 @@ ones which are needed to get the bot running. The core config settings are all
 [documented]({{ site.docs }}config.html#the-core-configuration-section),
 if you want to make other tweaks.
 
-Finally, it will ask you about configuration settings for modules. This will
-automatically detect what modules you have available, and run their
+Finally, it will ask you about configuration settings for plugins. This will
+automatically detect what plugins you have available, and run their
 configuration utility if they have one.
 
 Your configuration file will be stored in `~/.sopel`. The file will be called
 `default.cfg` by default. You can access the configuration wizard again by
-running `sopel -w`. You can also get just the module options with
+running `sopel -w`. You can also get just the plugin options with
 `sopel --configure-modules`. You can specify another configuration file with
 `sopel -c filename`. This works both for the configuration utility and for
 running the bot. This way, you can keep multiple different config files for
@@ -137,6 +137,6 @@ and [`auth_username`]({{ site.docs }}config.html#sopel.config.core_section.CoreS
 
 ----
 
-Want to learn how to write modules for Sopel? [Continue to the tutorial!]({% link _tutorials/part-1-writing-modules.md %})
+Want to learn how to write plugins for Sopel? [Continue to the tutorial!]({% link _tutorials/part-1-writing-plugins.md %})
 
 Just want to play around with your new IRC bot? [Read more usage articles!]({% link _usage/index.md %})

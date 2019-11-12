@@ -1,13 +1,15 @@
 ---
-title: Using the meetbot module
+title: Using the meetbot plugin
 migrated: true
 source: wiki
 order: 1000
+previously:
+  - /usage/meetbot-module/
 ---
 
 Sometimes, you might want to have meetings, and meetbot is here so you won't need to manually write down everything that was discussed. It simply does that for you.
 
-The meetbot module is available in Sopel, and is rather simple to use. It was inspired by [Debian's Meetbot](https://wiki.debian.org/MeetBot/) and is almost identical in functionality and commands.
+The meetbot plugin is available in Sopel, and is rather simple to use. It was inspired by [Debian's Meetbot](https://wiki.debian.org/MeetBot/) and is almost identical in functionality and commands.
 ## Making and running a meeting - a complete tutorial
 To make a meeting, first pick a quiet channel (and make sure Sopel is there) which is not the main network channel. Then, use the `.startmeeting`  command. When called without an argument (like in the previous example), the meeting will not have a title. If you want a title for the meeting, you can supply it as an argument, like this: `.startmeeting Board Meeting`.
 

@@ -4,4 +4,4 @@ build/*
 Gemfile.lock
 _changelogs/*.*.md
 _usage/commands.md
-_usage/module-configuration.md
+_usage/plugin-configuration.md

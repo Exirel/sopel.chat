@@ -1,8 +1,8 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 """
-Sopel module documentation utility
+Sopel plugin documentation utility
 This script creates (either Markdown or reST) files, documenting the commands
-and module configuration options in a Sopel instance.
+and plugin configuration options in a Sopel instance.
 
 Copyright 2012 Edward Powell, embolalia.net
 Copyright 2019 dgw, technobabbl.es
@@ -24,11 +24,11 @@ except:
 
 def main(argv=None):
     this_dir = os.path.dirname(os.path.abspath(__file__))
-    config_vals_file = os.path.join(this_dir, '_usage/module-configuration.md')
+    config_vals_file = os.path.join(this_dir, '_usage/plugin-configuration.md')
     commands_file = os.path.join(this_dir, '_usage/commands.md')
 
     parser = argparse.ArgumentParser(
-        description="Sopel module documentation utility",
+        description="Sopel plugin documentation utility",
         usage='%(prog)s [options]'
         )
     parser.add_argument(
@@ -50,21 +50,21 @@ def main(argv=None):
         args = parser.parse_args()
 
     if args.clean:
-        print("Cleaning up generated module documentation...")
+        print("Cleaning up generated plugin documentation...")
         os.remove(config_vals_file)
         os.remove(commands_file)
         return
 
-    print("Generating module docs using Sopel from " + args.sopel_root)
+    print("Generating plugin docs using Sopel from " + args.sopel_root)
     print("...")
     os.sys.path.insert(0, args.sopel_root)
 
     filenames = []
-    modules_dir = os.path.join(args.sopel_root, 'sopel', 'modules')
+    plugins_dir = os.path.join(args.sopel_root, 'sopel', 'modules')
 
-    for fn in os.listdir(modules_dir):
+    for fn in os.listdir(plugins_dir):
         if fn.endswith('.py') and not fn.startswith('_'):
-            filenames.append(os.path.join(modules_dir, fn))
+            filenames.append(os.path.join(plugins_dir, fn))
 
     filenames.sort()
 
@@ -72,70 +72,72 @@ def main(argv=None):
 
     commands = []
 
-    with open(config_vals_file, 'w') as f:
+    with open(config_vals_file, 'w', encoding='utf8') as f:
         f.write(inspect.cleandoc("""\
         ---
-        title: Module configuration
+        title: Plugin configuration
         order: 5
+        previously:
+          - /usage/module-configuration/
         ---
 
-        This page contains documentation for all modules within Sopel's main
-        modules directory. If you have added modules without rebuilding the
-        documentation, or are using a secondary modules directory, those
-        modules will not be shown here.
+        This page contains documentation for all plugins within Sopel's main
+        plugins directory. If you have added plugins without rebuilding the
+        documentation, or are using a secondary plugins directory, those
+        plugins will not be shown here.
 
-        ## Modules
+        ## Plugins
         """))
         for filename in filenames:
-            c = document_module(filename, f)
+            c = document_plugin(filename, f)
             if c:
                 commands.extend(c)
 
-    with open(commands_file, 'w') as f:
+    with open(commands_file, 'w', encoding='utf8') as f:
         f.write(inspect.cleandoc("""\
         ---
-        title: Module commands
+        title: Plugin commands
         order: 10
         ---
 
-        This page contains a list of all commands from modules within Sopel's
-        main modules directory. If you have added modules without rebuilding
-        the documentation, or are using a secondary modules directory, those
-        modules will not be shown here.
+        This page contains a list of all commands from plugins within Sopel's
+        main plugins directory. If you have added plugins without rebuilding
+        the documentation, or are using a secondary plugins directory, those
+        plugins will not be shown here.
         """))
-        f.write("\n\n| Command(s) | Purpose | Example | Module |\n")
+        f.write("\n\n| Command(s) | Purpose | Example | Plugin |\n")
         f.write("| ---------- | ------- | ------- | ------ |\n")
         for c in commands:
             process_command(f, c)
 
     print("Done!")
 
-def document_module(module_file, f):
-    try: module = imp.load_source(os.path.basename(module_file)[:-3], module_file)
+def document_plugin(plugin_file, f):
+    try: plugin = imp.load_source(os.path.basename(plugin_file)[:-3], plugin_file)
     except Exception as e:
-        print ("Error loading %s: %s\nThis module will not be documented."
-               % (module_file, e))
+        print ("Error loading %s: %s\nThis plugin will not be documented."
+               % (plugin_file, e))
     else:
         commands = []
-        if hasattr(module, 'configure'):
-            f.write('\n\n### %s\n\n'%(module.__name__))
-            if not module.configure.__doc__:
-                module.configure.__doc__ = 'This module has configuration options that are not documented. Go bludgeon the author.'
-            f.write(inspect.cleandoc(module.configure.__doc__))
-        for obj in dir(module):
-            func = getattr(module, obj)
+        if hasattr(plugin, 'configure'):
+            f.write('\n\n### %s\n\n'%(plugin.__name__))
+            if not plugin.configure.__doc__:
+                plugin.configure.__doc__ = 'This plugin has configuration options that are not documented. Go bludgeon the author.'
+            f.write(inspect.cleandoc(plugin.configure.__doc__))
+        for obj in dir(plugin):
+            func = getattr(plugin, obj)
             if not callable(func):
-                # guard against modules that use `from sopel import module`
+                # guard against plugins that use `from sopel import module`
                 continue
             if (hasattr(func, 'commands')):
                 if not hasattr(func, 'name'):
                     name = func.__name__
                 else:
                     name = func.name
-                setattr(func, 'module_name', module.__name__)
+                setattr(func, 'plugin_name', plugin.__name__)
                 commands.append((name, func))
 
-        # return the commands from each module in (roughly) alphabetical order
+        # return the commands from each plugin in (roughly) alphabetical order
         commands.sort()
         return commands
 
@@ -145,14 +147,16 @@ def process_command(f, func):
 
     purpose = (func.__doc__ or '*No documentation found.*')
     purpose = inspect.cleandoc(purpose).replace('\n', '<br>').replace('|', '\\|')
+    # Remove when upstream docstrings in the meetbot file have been updated
+    purpose = purpose.replace('_usage/meetbot-module.md', '_usage/meetbot-plugin.md')
     if hasattr(func, 'example'):
         example = '`%s`' % func.example[0]["example"].replace('$nickname', 'Sopel')
     else:
         example = ''
 
     commands = '.'+'<br>.'.join(func.commands) #TODO rules
-    module = func.module_name
-    line = "| %s | %s | %s | %s |\n" % (commands, purpose, example, module)
+    plugin = func.plugin_name
+    line = "| %s | %s | %s | %s |\n" % (commands, purpose, example, plugin)
     f.write(line)
 
 if __name__ == '__main__':

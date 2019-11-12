@@ -12,9 +12,9 @@ version named "Willie", we strongly encourage you to upgrade, as such old
 versions are no longer supported.**
 
 Sopel has a config file, written in an INI-like format. It can provide
-configuration options not just for the bot itself, but for modules as well.
+configuration options not just for the bot itself, but for plugins as well.
 Here, we're going to cover how you can leverage that configuration, as well as
-how to make your module configurable in the wizard like we showed in [the
+how to make your plugin configurable in the wizard like we showed in [the
 installation guide]({% link _usage/installing.md %}).
 
 ## Config Basics
@@ -46,14 +46,14 @@ domains =
 Here, `core`, `admin`, and `bugzilla` are sections. As you may have guessed,
 `core` contains attributes relevant to the bot's core functionality - it's
 nick, the host to connect to, etc., and `bugzilla` and `admin` contain
-attributes relevant to two of the bot's modules.
+attributes relevant to two of the bot's plugins.
 
 In the context of your callable, the config file is available as an attribute
 of the `bot` parameter. Each section is an attribute of the config file, and
 each key in a section is an attribute of its respective section. For example,
 if we wanted to get the owner of the bot, we would use `bot.config.core.owner`.
 
-## Configuring your module
+## Configuring your plugin
 
 There are two ways you can use the config. The first is super easy; if you have
 `eggs=parrot` set in the `spam` section, and you do `bot.config.spam.eggs`,
@@ -97,22 +97,22 @@ second one is the function used to parse what's in the config file. Here, it's
 `json.loads`. You can also pass an argument like `default=3` so that, if it's
 not set, it will just give you that default value.
 
-`setup` is a special function that is run when the bot is loading the module.
+`setup` is a special function that is run when the bot is loading the plugin.
 You can do anything you need to here (and we'll touch on a few other uses later
 in the tutorial), but all we do here is set up our config definition. The
 `define_section` function gets our section name and our definition class, and
-sets it up. Since this happens before the module starts getting messages from
+sets it up. Since this happens before the plugin starts getting messages from
 IRC, you'll be able to do `bot.config.swallow.velocity` and get your value back
 in all your triggered functions. It also means that you can't send messages to
 IRC; `bot.say` is defined here, but it won't do anything. If `setup` raises any
-sort of exception, the module will be disabled. Since `define_section` raises
+sort of exception, the plugin will be disabled. Since `define_section` raises
 an exception by default when there's an invalid config setting, this is all you
 have to do to make sure your config is valid.
 
 The next function is `configure`. This is a special function which will be run
 when you're going through the setup wizard. You don't have to have it in order
 for your config definition to work, but it's a good idea if you're going to be
-sharing your module, so that others will have an easier time setting it up.
+sharing your plugin, so that others will have an easier time setting it up.
 
 Again, we define the config section, but we don't want it to validate what's
 already in the config, in case someone edited the file manually and put in a

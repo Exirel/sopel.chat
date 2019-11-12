@@ -1,9 +1,10 @@
 ---
-title: "Sopel tutorial, Part 1: Introduction to writing modules"
+title: "Sopel tutorial, Part 1: Introduction to writing plugins"
 migrated: true
 source: wiki
 previously:
   - /tutorials/part-2-writing-modules/
+  - /tutorials/part-1-writing-modules/
 ---
 
 **NOTE: This guide is for Sopel 6.0+. If you are still using a version named
@@ -27,13 +28,13 @@ While this guide does cover a lot of what is available, there is much more than
 can be described here. The API documentation is available [online]({{ site.docs }}),
 and serves as a useful reference.
 
-Now it's time to start writing your own modules!
+Now it's time to start writing your own plugins!
 
 ## Hello, World!
 
 It's not a programming tutorial without a "Hello, world". We start by editing a
 file in `~/.sopel/modules`. If you've run Sopel already, this folder should
-already exist. Sopel will find modules in here by default, but you can add
+already exist. Sopel will find plugins in here by default, but you can add
 other folders for it to look in by modifying your config file.
 
 A "Hello, world" command is very simple in Sopel. In the folder I mentioned
@@ -47,14 +48,14 @@ def helloworld(bot, trigger):
     bot.say('Hello, world!')
 ```
 
-The first line imports the `sopel.module` library. In this module, we only
+The first line imports the `sopel.module` library. In this plugin, we only
 really need this for the next line. This is called a decorator, and associates
 the command "helloworld" with the function that comes right after it. A command
 in Sopel is triggered when a line said in a channel starts with a period,
 followed by the command (the prefix can be changed in the config file).
 
 The next line defines a function, which takes two arguments. This is the
-signature you'll see in nearly every function in Sopel modules. The first
+signature you'll see in nearly every function in Sopel plugins. The first
 argument is usually called `bot`, and it represents the Sopel instance you're
 running. It includes functions like `msg` and `say`, which we used above, that
 make the bot interact with the IRC network. It also includes access to the
@@ -171,11 +172,11 @@ use. This is done using Python's "docstrings". When a string is put immediately
 below a variable or function, or at the top of a file, without being assigned
 to anything else, it becomes that variable/function/file's docstring.
 The first one you'll want to do is one for your file. You should include a
-simple description of what the module does on the first line, with more
+simple description of what the plugin does on the first line, with more
 detailed information below. For example:
 
 ```python
-"""Frobnication module for Sopel
+"""Frobnication plugin for Sopel
 
 Includes commands for frobnicating synchronous and asyncronous Werlingford
 paradigms. Uses a configurable HPADP endpoint to defalicate user-provided
