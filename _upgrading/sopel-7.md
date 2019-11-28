@@ -287,6 +287,22 @@ Calls to `sopel.logger.get_logger()` will begin emitting deprecation warnings
 in Sopel 8.0, to alert stragglers (or users of possibly-abandoned code). We
 will remove this function from the API in Sopel 9.0.
 
+### Removal of deprecated attributes
+
+A number of ancient attributes that were considered deprecated many releases
+ago _finally_ have been removed, mostly from the `Bot` object. Among them:
+
+  - `bot.ops`
+  - `bot.halfplus`
+  - `bot.voices`
+  - `bot.stats`
+
+This list is not comprehensive, but honestly: If your code breaks because a
+removed attribute no longer exists, it's actually been broken for a *long* time
+on account of the attributes themselves always being empty. They were just
+placeholders to avoid anything raising `AttributeError`. (Sopel's current
+maintenance team wouldn't have done it that way, but we can't undo the past.)
+
 
 ## Sopel 7 plugin changes
 
